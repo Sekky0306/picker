@@ -13,14 +13,15 @@
 @end
 
 @implementation ViewController{
-    UIPickerView *picker;
+    IBOutlet UIPickerView *picker;
+    NSArray *ballParkArray;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     // UIPickerのインスタンス化
-    picker = [[UIPickerView alloc]init];
+   
     
     // デリゲートを設定
     picker.delegate = self;
@@ -32,13 +33,14 @@
     picker.showsSelectionIndicator = YES;
     
     // UIPickerのインスタンスをビューに追加
-    [self.view addSubview:picker];
+    ballParkArray = [NSArray arrayWithObjects:@"横浜スタジアム",@"東京ドーム",@"神宮球場",nil];
+    
 }
 
  // ピッカーに表示する列数を返
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 3;
+    return 1;
 }
 
 
@@ -47,59 +49,19 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView
 numberOfRowsInComponent:(NSInteger)component
 {
-    return 5;
+    return ballParkArray.count;
 }
 
 
  // 行のサイズを変更
  
-- (CGFloat)pickerView:(UIPickerView *)pickerView
-    widthForComponent:(NSInteger)component
-{
-    switch (component) {
-        case 0: // 1列目
-            return 50.0;
-            break;
-            
-        case 1: // 2列目
-            return 100.0;
-            break;
-           
-        case 2: //3列目
-            return 150.0;
-            break;
-            
-        default:
-            return 0;
-            break;
-    }
-}
-
 
   //ピッカーに表示する値を返す
  
 - (NSString *)pickerView:(UIPickerView *)pickerView
              titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    switch (component) {
-        case 0: // 1列目
-            
-            return [NSString stringWithFormat:@"横浜スタジアム", (long)row];
-            break;
-            
-        case 1: // 2列目
-            return [NSString stringWithFormat:@"東京ドーム", (long)row];
-            break;
-            
-        case 2: // 3列目
-            return [NSString stringWithFormat:@"神宮球場", (long)component, (long)row];
-            break;
-            
-        default:
-            return 0;
-            break;
-    }
-}
+    return ballParkArray[row];}
 
 
 //ピッカーの選択行が決まったとき
@@ -107,18 +69,7 @@ numberOfRowsInComponent:(NSInteger)component
 - (void)pickerView:(UIPickerView *)pickerView
       didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    // 1列目の選択された行数を取得
-    NSInteger val0 = [pickerView selectedRowInComponent:0];
-    
-    // 2列目の選択された行数を取得
-    NSInteger val1 = [pickerView selectedRowInComponent:1];
-    
-    // 3列目の選択された行数を取得
-    NSInteger val2 = [pickerView selectedRowInComponent:2];
-    
-    NSLog(@"1列目:%ld行目が選択", (long)val0);
-    NSLog(@"2列目:%ld行目が選択", (long)val1);
-    NSLog(@"3列目:%ld行目が選択", (long)val2);
+    NSLog(@"%@が選択されました",ballParkArray[row]);
 }
 
 - (void)didReceiveMemoryWarning {
